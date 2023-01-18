@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.Rest;
 using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
