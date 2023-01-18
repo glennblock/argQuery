@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Rest;
-using Microsoft.Azure.Management.ResourceGraph;
-using Microsoft.Azure.Management.ResourceGraph.Models;
+using Azure.Core;
+using Azure.Identity;
+using Azure.ResourceManager;
+using Azure.ResourceManager.Resources;
+using Azure.ResourceManager.ResourceGraph;
+using Azure.ResourceManager.ResourceGraph.Models;
 
 namespace argQuery
 {
@@ -17,17 +21,13 @@ namespace argQuery
             string strClientSecret = args[2];
             string strQuery = args[3];
 
-            AuthenticationContext authContext = new AuthenticationContext("https://login.microsoftonline.com/" + strTenant);
-            AuthenticationResult authResult = await authContext.AcquireTokenAsync("https://management.core.windows.net", new ClientCredential(strClientId, strClientSecret));
-            ServiceClientCredentials serviceClientCreds = new TokenCredentials(authResult.AccessToken);
-
-            ResourceGraphClient argClient = new ResourceGraphClient(serviceClientCreds);
-            QueryRequest request = new QueryRequest();
-            request.Query = strQuery;
-
-            QueryResponse response = argClient.Resources(request);
-            Console.WriteLine("Records: " + response.Count);
-            Console.WriteLine("Data:\n" + response.Data);
+            var client = new ArmClient(new ClientSecretCredential(strTenant, strClientId, strClientSecret));
+            var tenant = client.GetTenants().First();
+            //Console.WriteLine($"{tenant.Id} {tenant.HasData}");
+            var queryContent = new ResourceQueryContent(strQuery);
+            var response = tenant.GetResources(queryContent);
+            var result = response.Value;
+            Console.WriteLine($"Count: {result.Data.ToString()}");
         }
     }
 }
