@@ -1,6 +1,6 @@
 # argQuery 
 
-This is an updated version of the Azure [quickstart](https://learn.microsoft.com/en-us/azure/governance/resource-graph/first-query-dotnet) which queries the Resource Graph which uses the newer SDK vs the deprecated APIs.
+This is an updated version of the Azure [quickstart](https://learn.microsoft.com/en-us/azure/governance/resource-graph/first-query-dotnet) for querying the Resource Graph, which uses the newer SDK and APIs.
 
 # Version
 .NET 6.0
